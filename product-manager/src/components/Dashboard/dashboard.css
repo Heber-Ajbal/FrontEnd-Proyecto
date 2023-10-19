@@ -1,0 +1,113 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #000000;
+  }
+  .container {
+    padding-top: 50px; 
+  }
+  .container a{
+    text-decoration: none;
+    outline: none;
+  }
+  /*---- Card ----*/
+  .card {
+    border-radius: 8px;
+    margin-top: 0px;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -ms-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.50);
+  }
+  .card:hover {
+    box-shadow: 0px 9px 17px rgba(0, 0, 0, 0.70);
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -ms-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
+  .card .image-box {
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.50);
+    border-radius: 5px;
+    height: 450px;
+  }
+
+  .card .card2{
+    background: url(/src/assets/image/users.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  .card .card3{
+    background: url(/src/assets/image/sales.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.card .card1{
+    background: url(/src/assets/image/products.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+  /*---- Text Container ----*/
+  .card .image-box .text-container {
+    padding: 18px 20px;
+    margin-top: 324px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    overflow: hidden;
+  }
+  .card .image-box:hover .text-container {
+    padding: 16px 20px;
+    margin-top: 204px;
+    background: rgba(0, 0 ,0 , 0.7);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+  }
+  .card .image-box .text-container p {
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #FFFFFF;
+    margin: 12px 0px 5px 0px;
+    padding: 0px;
+  }
+  .subtitle {
+    font-size: 38px;
+    text-align: left;
+    color: #FFFFFF;
+    font-weight: 700;
+    line-height: 46px;
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 0px;
+  }
+  .subtitle i {
+    color: #FFFF00;
+    visibility: hidden;
+    margin-left: 8px;
+  }
+  .card:hover .subtitle i {
+    visibility: visible;
+  }
+  /*---- Button ----*/  
+  .button-down {
+    background: #FFFF00;
+    padding: 12px 0px;
+    text-align: center;
+    font-size: 15px;
+    color: #000000 !important;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
