@@ -37,6 +37,8 @@ export default function Login() {
         console.log("Login successfully!!");
 		const json = await response.json();
 		AuthResponse.body.token = await json.token;
+		AuthResponse.body.id = await json.id;
+		AuthResponse.body.name = await json.username;
         setErrorResponse("");
 
 		if(AuthResponse.body.token){

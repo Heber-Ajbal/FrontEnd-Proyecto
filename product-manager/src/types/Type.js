@@ -1,6 +1,8 @@
 export var  AuthResponse = {
     body: {
-        token: String
+        token: String,
+        id:String,
+        name:String,
     }
 };
 

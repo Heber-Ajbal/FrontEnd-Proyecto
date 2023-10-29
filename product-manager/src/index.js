@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Product from "./components/Products/Product";
 import Login from "./components/Login/Login";
 import Signup from "./components/SignUp/Signup";
+import Shopping from "./components/Cart-shopping/shopping";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthProvider";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path : "/product",
         element: <Product/>,
+      },
+      {
+        path : "/store",
+        element: <Shopping/>,
       },
     ],
   },

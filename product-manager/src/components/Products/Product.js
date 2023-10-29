@@ -4,6 +4,8 @@ import { API_URL } from "../../auth/routing"
 import NavBarLayout from "../../layout/NavbarLayout";
 import DataTable from "react-data-table-component";
 import { Button, Form, Modal } from "react-bootstrap";
+import jsPDF from "jspdf";
+import "jspdf-autotable"
 
 export default function Dashboard(){
 
@@ -272,6 +274,46 @@ export default function Dashboard(){
         handleShowAdd();
     }
 
+    const generatePDF = () => {
+
+        const doc = new jsPDF();
+        const columnsPDF = [{
+            header:'Id',
+            dataKey: 'idproduct'
+        },
+        {
+            header:'Nombre Producto',
+            dataKey: 'name'
+        },
+        {
+            header:'Precio',
+            dataKey: 'price'
+        },
+        {
+            header:'Cantidad',
+            dataKey: 'quantity'
+        },
+        {
+            header:'Fecha de Vencimiento',
+            dataKey: 'dueDate'
+        }]   
+        const dataPDF = products;
+
+
+        doc.autoTable({
+            columns: columnsPDF,
+            body: dataPDF
+        });
+
+        const fecha = new Date();
+        const year = fecha.getFullYear();
+        const month = String(fecha.getMonth() + 1).padStart(2, '0'); // Suma 1 al mes porque los meses en JavaScript van de 0 a 11
+        const day = String(fecha.getDate()).padStart(2, '0');
+        const fechaFormateada = `${year}-${month}-${day}`;
+
+        doc.save(`Repoerte de Productos ${fechaFormateada}.pdf`);
+    }
+
     return (
         <NavBarLayout>
             <div class = "container text-center">
@@ -286,7 +328,7 @@ export default function Dashboard(){
                         actions={
                             <div>
                                 <Button variant="outline-success" onClick={cleanFieldsAdd}>Agregar Producto</Button>{' '}
-                                <Button variant="outline-info" >Generar PDF</Button>{' '}
+                                <Button variant="outline-info" onClick={generatePDF}>Generar PDF</Button>{' '}
 
                                  {/* MODAL TO Create THE PRODUCT */}
                                 <Modal show={showCreate} onHide={handleCloseAdd}>

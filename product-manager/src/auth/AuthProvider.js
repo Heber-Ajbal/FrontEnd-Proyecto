@@ -33,6 +33,8 @@ export function AuthProvider({children}){
 
     function saveUser(AuthResponse){
         localStorage.setItem("token",JSON.stringify(AuthResponse.body.token));
+        localStorage.setItem("ID",JSON.stringify(AuthResponse.body.id));
+        console.log(AuthResponse.body);
         setIsAuthenticated(true);
     }
 
