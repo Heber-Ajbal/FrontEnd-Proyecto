@@ -21,8 +21,6 @@ export function AuthProvider({children}){
         
     }
 
-
-
     function getAccessToken(){
         const tokenData = localStorage.getItem("token");
         if(tokenData){

@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 export function CartItem({ id, quantity,name,price }) {
     const { removeFromCart,cartItems } = useShoppingCart();
     const [shopItem,setShopItem] = useState([]);
-    const storeItems = useState([]);
     
     
     useEffect(() => {
@@ -23,7 +22,7 @@ export function CartItem({ id, quantity,name,price }) {
 
     return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
-        <img src={image}style={{ width: "125px", height: "75px", objectFit: "cover" }}/>
+        <img src={image}style={{ width: "115px", height: "75px", objectFit: "cover" }}/>
         <div className="me-auto">
             <div>
                 {name}{" "}
@@ -34,7 +33,7 @@ export function CartItem({ id, quantity,name,price }) {
                 )}
             </div>
             <div className="text-muted" style={{ fontSize: ".75rem" }}>
-                {formatCurrency(price)}
+                {formatCurrency(item.price)}
             </div>
         </div>
         <div> {formatCurrency(price * quantity)}</div>

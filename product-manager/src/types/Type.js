@@ -3,6 +3,7 @@ export var  AuthResponse = {
         token: String,
         id:String,
         name:String,
+        rol:String
     }
 };
 

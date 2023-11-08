@@ -16,9 +16,9 @@ export default function Dashboard(){
                                 <span class="subtitle">Usuarios<i class="fa fa-angle-double-down"></i></span>
                                 <p>Podra gestionar los usuarios que acualmente estan registrados.</p>
                             </div>
-                            <div class="button-down">
-                                <span>Ver</span>
-                            </div>
+                            <Link to="/usersM"><div class="button-down" >
+                                <span  >Ver</span>
+                            </div></Link>
                         </div>
                     </div>
                 </a>
@@ -31,9 +31,11 @@ export default function Dashboard(){
                                 <span class="subtitle">Ventas<i class="fa fa-angle-double-down"></i></span>
                                 <p>Podra verificar todas las transacciones que se han realizado de los prouductos.</p>
                             </div>
-                            <Link to="/store"><div class="button-down" >
-                                <span  >Ver</span>
-                            </div></Link>
+                            <Link to="/sales">
+                                <div class="button-down" >
+                                    <span  >Ver</span>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </a>

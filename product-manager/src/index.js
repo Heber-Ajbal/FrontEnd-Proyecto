@@ -8,6 +8,8 @@ import Product from "./components/Products/Product";
 import Login from "./components/Login/Login";
 import Signup from "./components/SignUp/Signup";
 import Shopping from "./components/Cart-shopping/shopping";
+import Sales from "./components/Sales/Sales";
+import Users from "./components/Users/UsersMa.js";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthProvider";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -36,6 +38,14 @@ const router = createBrowserRouter([
       {
         path : "/store",
         element: <Shopping/>,
+      },
+      {
+        path : "/sales",
+        element: <Sales/>,
+      },
+      {
+        path : "/usersM",
+        element: <Users/>,
       },
     ],
   },

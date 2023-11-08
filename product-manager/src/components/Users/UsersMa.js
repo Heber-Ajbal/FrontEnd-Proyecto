@@ -4,23 +4,22 @@ import { API_URL } from "../../auth/routing"
 import NavBarLayout from "../../layout/NavbarLayout";
 import DataTable from "react-data-table-component";
 import { Button, Form, Modal } from "react-bootstrap";
-import jsPDF from "jspdf";
 import "jspdf-autotable"
 
-export default function Product(){
+export default function User(){
 
-    const [products, setProducts] = useState([]);
-    const [product, setProduct] = useState([]);
+    const [users, setusers] = useState([]);
+    const [user, setuser] = useState([]);
     const [search, SetSearch]= useState('');
     const [filter, setFilter] = useState([]);
     const [showUpdate, setShow] = useState(false);    
     const [showCreate, setShowCreate] = useState(false);
 
     const [Id,setId] = useState("");
-    const [name,setName] = useState("");
-    const [price,setPrice] = useState("");
-    const [quantity,setQuantity] = useState("");
-    const [dueDate,setDueDate] = useState("");
+    const [username,setUsername] = useState("");
+    const [email,setEmail] = useState("");
+    const [rol,setRol] = useState("");
+    const [password,setPassword] = useState("");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -32,41 +31,37 @@ export default function Product(){
     const colums = [
         {
             name:'Id',
-            selector: row => row.idproduct,
+            selector: row => row.idUser,
             sortable: true,
+            omit:true
         },
         {
-            name:'Nombre Producto',
-            selector: row => row.name,
+            name:'Username',
+            selector: row => row.username,
             sortable: true
         },
         {
-            name:'Precio',
-            selector: row => row.price,
+            name:'Email',
+            selector: row => row.email,
             sortable: true
         },
         {
-            name:'Cantidad',
-            selector: row => row.quantity,
-            sortable: true
-        },
-        {
-            name:'Fecha de Vencimiento',
-            selector: row => row.dueDate,
+            name:'Rol',
+            selector: row => row.rol,
             sortable: true
         },
         {
             name:"Acciones",
             cell:(row)=>(
-                <div>
-                    <Button variant="danger" onClick={()=>deleteProduct(row.idproduct)}>Delete</Button>{' '}
-                    <Button variant="primary" onClick={() =>getProductId(row.idproduct)}>Update</Button>
+                <div >
+                    <Button variant="danger" onClick={()=>deleteUser(row.idUser)}>Delete</Button>{' '}
+                    <Button variant="primary" onClick={() =>getUserId(row.idUser)}>Ver</Button>
 
 
                     {/* MODAL TO UPDATE THE PRODUCT */}
                     <Modal show={showUpdate} onHide={handleClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>Datos del Producto: {product.name}</Modal.Title>
+                        <Modal.Title>Datos del Usuario: {user.username}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                         <Form>
@@ -75,53 +70,42 @@ export default function Product(){
                             
                                 <Form.Control
                                     type="text"
-                                    value={product.idproduct}
+                                    value={user.idUser}
                                     disabled
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                            <Form.Label>Nombre</Form.Label>
+                            <Form.Label>Username</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    disabled
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
-                            <Form.Label>Cantidad</Form.Label>
+                            <Form.Label>Email</Form.Label>
                                 <Form.Control
-                                    type="number"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    disabled
                                 />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput4">
-                            <Form.Label>Precio</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                />
-                            </Form.Group>
+                            </Form.Group>                         
                             <Form.Group className="mb-3" controlId="dueDate">
-                            <Form.Label>Fecha de Vencimiento</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name ="dueDate"
-                                    value={dueDate}
-                                    autoFocus
-                                    onChange={(e) => setDueDate(e.target.value)}
-                                />
-                            </Form.Group>                            
+                                        <Form.Label>Rol</Form.Label>
+                                            <Form.Select value={rol} onChange={(e) => setRol(e.target.value)} disabled>
+                                                <option>Seleccione un Rol</option>
+                                                <option  value="ADMIN"  >Administrador</option>
+                                                <option  value="Client" >Cliente</option>
+                                            </Form.Select>
+                                        </Form.Group>                              
                             
                         </Form>
                         </Modal.Body>
                         <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={updateProduct}>
-                            Actualizar Producto
+                            Cerrar
                         </Button>
                         </Modal.Footer>
                     </Modal>
@@ -132,20 +116,20 @@ export default function Product(){
         }
     ]  
 
-    useEffect(()=>{getProducts();}, []);
+    useEffect(()=>{getUsers();}, []);
 
     useEffect(()=>{
-        const result= products.filter((item)=>{
-            const nameMatch = item.name.toLowerCase().includes(search.toLowerCase());
-            const idMatch = item.idproduct.toString().includes(search.toLowerCase());
-            return nameMatch || idMatch;
+        const result= users.filter((item)=>{
+            const nameMatch = item.username.toLowerCase().includes(search.toLowerCase());
+            const emailMatch = item.email.toLowerCase().includes(search.toLowerCase());
+            return nameMatch || emailMatch;
         });
         setFilter(result);
     },[search]);
 
-    async function getProducts(){
+    async function getUsers(){
         try {
-            const response = await fetch(`${API_URL}/products`,{
+            const response = await fetch(`${API_URL}/users`,{
                 headers:{
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${Auth.getAccessToken()}`
@@ -153,10 +137,9 @@ export default function Product(){
             });
 
             const data = await response.json();
-            console.log(data);
 
             if(response.ok){
-                setProducts(data)
+                setusers(data)
                 setFilter(data);
             }
         } catch (error) {
@@ -164,9 +147,9 @@ export default function Product(){
         }
     }
 
-    async function getProductId(idProduct){
+    async function getUserId(idUser){
         try {
-            const response = await fetch(`${API_URL}/products/${idProduct}`,{
+            const response = await fetch(`${API_URL}/users/${idUser}`,{
                 headers:{
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${Auth.getAccessToken()}`
@@ -176,13 +159,12 @@ export default function Product(){
             const data = await response.json();
 
             if(response.ok){
-                console.log(data);
-                setProduct(data);
-                setId(data.idproduct);
-                setName(data.name);
-                setPrice(data.price);
-                setQuantity(data.quantity);
-                setDueDate(data.dueDate);
+                setuser(data);
+                setId(data.idUser);
+                setUsername(data.username);
+                setEmail(data.email);
+                setRol(data.authorities[0].authority);
+                setPassword(data.password);
                 handleShow();
             }
         } catch (error) {
@@ -190,9 +172,9 @@ export default function Product(){
         }
     }
 
-    async function deleteProduct(idProduct){
+    async function deleteUser(idUser){
         try {
-            const response = await fetch(`${API_URL}/products/delete/${idProduct}`,{
+            const response = await fetch(`${API_URL}/users/${idUser}`,{
                 method: 'DELETE',
                 headers:{
                     "Content-Type": "application/json",
@@ -201,17 +183,17 @@ export default function Product(){
             });
 
             if(response.ok){
-                getProducts();
-                alert("Producto eliminado correctamente");
+                getUsers();
+                alert("Usuario eliminado correctamente");
             }
         } catch (error) {
             
         }
     }
 
-    async function updateProduct(){
+    async function updateUser(){
         try {
-            const response = await fetch(`${API_URL}/products/update`,{
+            const response = await fetch(`${API_URL}/users/update`,{
                 method: 'POST',
                 headers:{
                     "Content-Type": "application/json",
@@ -219,17 +201,17 @@ export default function Product(){
                 },
                 body: JSON.stringify(
                     {
-                        "idproduct": Id,
-                        "name":name,
-                        "price" : price,
-                        "quantity": quantity,
-                        "dueDate":dueDate,
+                        "idUser": Id,
+                        "username":username,
+                        "email" : email,
+                        "rol": rol,
+                        "password":password,
                     }),
             });
 
             if(response.ok){
-                getProducts();
-                alert("Producto Actualizado correctamente");
+                getUsers();
+                alert("Usuario Actualizado correctamente");
                 handleClose()
             }
         } catch (error) {
@@ -237,9 +219,15 @@ export default function Product(){
         }
     }
 
-    async function AddProduct(){
+    async function AddUser(){
         try {
-            const response = await fetch(`${API_URL}/products/add`,{
+
+            console.log(username);
+            console.log(email);
+            console.log(rol);
+            console.log(password);
+
+            const response = await fetch(`${API_URL}/users/add`,{
                 method: 'POST',
                 headers:{
                     "Content-Type": "application/json",
@@ -247,17 +235,17 @@ export default function Product(){
                 },
                 body: JSON.stringify(
                     {
-                        "name":name,
-                        "price" : price,
-                        "quantity": quantity,
-                        "dueDate":dueDate,
+                        "username":username,
+                        "email" : email,
+                        "password": password,
+                        "rol":rol,
                     }),
             });
 
             if(response.ok){
-                getProducts();
+                getUsers();
                 handleCloseAdd()
-                alert("Producto Agregado correctamente");
+                alert("Usuario Agregado correctamente");
                 
             }
         } catch (error) {
@@ -267,52 +255,13 @@ export default function Product(){
 
     function cleanFieldsAdd(){
         setId("");
-        setName("");
-        setPrice("");
-        setQuantity("");
-        setDueDate("");
+        setUsername("");
+        setEmail("");
+        setRol("");
+        setPassword("");
         handleShowAdd();
     }
 
-    const generatePDF = () => {
-
-        const doc = new jsPDF();
-        const columnsPDF = [{
-            header:'Id',
-            dataKey: 'idproduct'
-        },
-        {
-            header:'Nombre Producto',
-            dataKey: 'name'
-        },
-        {
-            header:'Precio',
-            dataKey: 'price'
-        },
-        {
-            header:'Cantidad',
-            dataKey: 'quantity'
-        },
-        {
-            header:'Fecha de Vencimiento',
-            dataKey: 'dueDate'
-        }]   
-        const dataPDF = products;
-
-
-        doc.autoTable({
-            columns: columnsPDF,
-            body: dataPDF
-        });
-
-        const fecha = new Date();
-        const year = fecha.getFullYear();
-        const month = String(fecha.getMonth() + 1).padStart(2, '0'); // Suma 1 al mes porque los meses en JavaScript van de 0 a 11
-        const day = String(fecha.getDate()).padStart(2, '0');
-        const fechaFormateada = `${year}-${month}-${day}`;
-
-        doc.save(`Repoerte de Productos ${fechaFormateada}.pdf`);
-    }
 
     return (
         <NavBarLayout>
@@ -327,63 +276,60 @@ export default function Product(){
                         highlightOnHover
                         actions={
                             <div>
-                                <Button variant="outline-success" onClick={cleanFieldsAdd}>Agregar Producto</Button>{' '}
-                                <Button variant="outline-info" onClick={generatePDF}>Generar PDF</Button>{' '}
+                                <Button variant="outline-success" onClick={cleanFieldsAdd}>Agregar Usuario</Button>{' '}
 
-                                 {/* MODAL TO Create THE PRODUCT */}
+                                 {/* MODAL TO Create THE User */}
                                 <Modal show={showCreate} onHide={handleCloseAdd}>
                                     <Modal.Header closeButton>
-                                    <Modal.Title>Agregar Producto</Modal.Title>
+                                    <Modal.Title>Datos del Usuario</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
                                     <Form>
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                                        <Form.Label>Nombre</Form.Label>
+                                        <Form.Label>Username</Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
+                                                value={username}
+                                                onChange={(e) => setUsername(e.target.value)}
                                             />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
-                                        <Form.Label>Cantidad</Form.Label>
+                                        <Form.Label>Email</Form.Label>
                                             <Form.Control
-                                                type="number"
-                                                value={quantity}
-                                                onChange={(e) => setQuantity(e.target.value)}
+                                               type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
                                             />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput4">
-                                        <Form.Label>Precio</Form.Label>
+                                        <Form.Label>Contraseña</Form.Label>
                                             <Form.Control
-                                                type="text"
-                                                value={price}
-                                                onChange={(e) => setPrice(e.target.value)}
+                                                type="password"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
                                             />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="dueDate">
-                                        <Form.Label>Fecha de Vencimiento</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name ="dueDate"
-                                                value={dueDate}
-                                                autoFocus
-                                                onChange={(e) => setDueDate(e.target.value)}
-                                            />
+                                        <Form.Label>Rol</Form.Label>
+                                            <Form.Select value={rol} onChange={(e) => setRol(e.target.value)}>
+                                                <option>Seleccione un Rol</option>
+                                                <option value="ADMIN" >Administrador</option>
+                                                <option value="Client">Cliente</option>
+                                            </Form.Select>
                                         </Form.Group>                            
                                         
                                     </Form>
                                     </Modal.Body>
                                     <Modal.Footer>
                                     <Button variant="secondary" onClick={handleCloseAdd}>
-                                        Close
+                                        Cancelar
                                     </Button>
-                                    <Button variant="primary" onClick={AddProduct}>
-                                        Agreagar Producto
+                                    <Button variant="primary" onClick={AddUser}>
+                                        Agreagar Usuario
                                     </Button>
                                     </Modal.Footer>
                                 </Modal>
-                    {/* END THE MODAL TO Create DE PRODUCT */}
+                    {/* END THE MODAL TO Create DE User */}
 
                             </div>
                         }
@@ -393,7 +339,7 @@ export default function Product(){
 
                             <input type="text"
                                 class="w-25 form-control"
-                                placeholder="Buscar Producto..."
+                                placeholder="Buscar Usuario..."
                                 value={ search}
                                 onChange={(e)=>SetSearch(e.target.value)}
                             />

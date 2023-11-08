@@ -38,15 +38,24 @@ export default function Login() {
 		const json = await response.json();
 		AuthResponse.body.token = await json.token;
 		AuthResponse.body.id = await json.id;
-		AuthResponse.body.name = await json.username;
+		AuthResponse.body.name = await json.username;		
+		AuthResponse.body.rol = await json.rol;
+
         setErrorResponse("");
 
 		if(AuthResponse.body.token){
 			auth.saveUser(AuthResponse);
-			goTo("/dashboard");
-		}
 
-        goTo("/");
+			console.log(AuthResponse.body.rol)
+
+			if(AuthResponse.body.rol === "Client"){
+				goTo("/store");
+			}else{
+				goTo("/dashboard");
+			}
+
+			
+		}
     }else{
         console.log("Something went wrong")
         const json = await response.json();

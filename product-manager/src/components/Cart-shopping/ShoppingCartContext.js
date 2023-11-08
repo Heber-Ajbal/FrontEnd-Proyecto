@@ -3,11 +3,7 @@ import { ShoppingCart } from "./shoppingCart";
 import { API_URL } from "../../auth/routing";
 import { useAuth } from "../../auth/AuthProvider";
 
-const CartItem = {
-    idproduct: 0,
-    quantity: 0,
-    quantityTotal: 0,
-};
+
 
 const Productitem={
     idproduct: 0,
@@ -35,7 +31,6 @@ export function useShoppingCart() {
 export function ShoppingCartProvider({children}){
     const [cartItems, setCartItems] = useState([]);
     const [product, setProduct] = useState([]);
-    const [addProduct, setAddProduct] = useState([]);
     const Auth = useAuth();
     const[isOpen,setIsOpen] = useState(false);
 
@@ -53,7 +48,6 @@ export function ShoppingCartProvider({children}){
             });
     
             const data = await response.json();
-            console.log("Funciona");
     
             if(response.ok){
                 setProduct(data);
@@ -68,7 +62,6 @@ export function ShoppingCartProvider({children}){
 
     function openCart(){                
         setIsOpen(true);  
-        console.log("Verdadero");
     }
     const closeCart = () => setIsOpen(false);
 
