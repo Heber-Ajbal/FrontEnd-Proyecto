@@ -13,6 +13,8 @@ import Users from "./components/Users/UsersMa.js";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthProvider";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 
 const router = createBrowserRouter([
   {

@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
 import NavBarLayout from "../../layout/NavbarLayout";
 import DataTable from "react-data-table-component";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { API_URL } from "../../auth/routing";
 import { useAuth } from "../../auth/AuthProvider";
 
@@ -129,7 +129,10 @@ export default function Sales(){
 
     return (
         <NavBarLayout>
-            <div class = "container text-center">
+            <Container fluid="md">
+            <div class = "text-center">
+            <br/><br/>
+                <h1>Historial de Ventas Realizadas</h1>
                 <div class="col">
                     <DataTable
                         columns={colums}
@@ -158,6 +161,7 @@ export default function Sales(){
 
                 
             </div>
+            </Container>
         </NavBarLayout>
     );
 }

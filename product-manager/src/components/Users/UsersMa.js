@@ -3,7 +3,7 @@ import { useAuth } from "../../auth/AuthProvider";
 import { API_URL } from "../../auth/routing"
 import NavBarLayout from "../../layout/NavbarLayout";
 import DataTable from "react-data-table-component";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Container, Form, Modal } from "react-bootstrap";
 import "jspdf-autotable"
 
 export default function User(){
@@ -265,7 +265,10 @@ export default function User(){
 
     return (
         <NavBarLayout>
-            <div class = "container text-center">
+            <Container fluid="md">  
+            <div class = "text-center">
+            <br/><br/>
+            <h1>Usuario</h1>
                 <div class="col">
                     <DataTable
                         columns={colums}
@@ -353,6 +356,7 @@ export default function User(){
 
                 
             </div>
+            </Container>
         </NavBarLayout>
     );
 }

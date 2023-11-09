@@ -3,7 +3,7 @@ import { useAuth } from "../../auth/AuthProvider";
 import { API_URL } from "../../auth/routing"
 import NavBarLayout from "../../layout/NavbarLayout";
 import DataTable from "react-data-table-component";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Container, Form, Modal } from "react-bootstrap";
 import jsPDF from "jspdf";
 import "jspdf-autotable"
 
@@ -58,9 +58,10 @@ export default function Product(){
         {
             name:"Acciones",
             cell:(row)=>(
-                <div>
+                <div className="text-center">
+                    
                     <Button variant="danger" onClick={()=>deleteProduct(row.idproduct)}>Delete</Button>{' '}
-                    <Button variant="primary" onClick={() =>getProductId(row.idproduct)}>Update</Button>
+                    <Button variant="primary" onClick={() =>getProductId(row.idproduct)}>Update</Button>{' '}
 
 
                     {/* MODAL TO UPDATE THE PRODUCT */}
@@ -315,8 +316,13 @@ export default function Product(){
     }
 
     return (
-        <NavBarLayout>
-            <div class = "container text-center">
+        <NavBarLayout>  
+            <Container fluid="md">
+
+                  
+            <div class = "text-center">
+                <br/><br/>
+                <h1>Productos</h1>
                 <div class="col">
                     <DataTable
                         columns={colums}
@@ -407,6 +413,7 @@ export default function Product(){
 
                 
             </div>
+            </Container>    
         </NavBarLayout>
     );
 }

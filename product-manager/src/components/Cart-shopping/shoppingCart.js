@@ -18,6 +18,8 @@ export  function ShoppingCart({ isOpen }) {
     const [price,setPrice] = useState("");
     const [quantity,setQuantity] = useState("");
     const [dueDate,setDueDate] = useState("");
+    
+    const [total,setTotal] = useState("");
 
 
     const handleClose = () => setShow(false);
@@ -189,12 +191,24 @@ export  function ShoppingCart({ isOpen }) {
                         {formatCurrency(
                         cartItems.reduce((total, cartItem) => {
                             const item = cartItems.find((i) => i.idproduct === cartItem.idproduct);
+                            const totalSale = total + (item?.price || 0) * cartItem.quantity;
+                            if(totalSale === 0){
+                              setTotal(totalSale)
+                              console.log(totalSale)
+                            }
+                            console.log(totalSale)
                             return total + (item?.price || 0) * cartItem.quantity;
                         }, 0)
                         )}
                     </div>
                     <div >
-                        <Button onClick={AddSale} className="w-100">Proceder con el pago</Button>
+                      
+                          
+                          <Button onClick={AddSale} className="w-100">Proceder con el pago</Button>
+                     
+                        
+                      
+                        
 
                         <Modal size="xl" show={showPayment} onHide={handleClose}>
                         <Modal.Header closeButton>

@@ -15,6 +15,7 @@
 		0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	--shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
 		0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	--color-blueLog: #8bc5ff;
 }
 
 html {
@@ -77,26 +78,7 @@ img {
 	margin: 0 auto;
 }
 
-.ion-logo-apple {
-	font-size: 1.65rem;
-	line-height: inherit;
-	margin-right: 0.5rem;
-	color: var(--color-black);
-}
 
-.ion-logo-google {
-	font-size: 1.65rem;
-	line-height: inherit;
-	margin-right: 0.5rem;
-	color: var(--color-red);
-}
-
-.ion-logo-facebook {
-	font-size: 1.65rem;
-	line-height: inherit;
-	margin-right: 0.5rem;
-	color: var(--color-blue);
-}
 
 .text-large {
 	font-size: 2rem;
@@ -232,3 +214,32 @@ img {
 .main .wrapper .method-action:hover {
 	background: var(--color-light);
 }
+
+
+ .method-actionL {
+	font-family: inherit;
+	font-size: 0.95rem;
+	font-weight: 500;
+	line-height: inherit;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: auto;
+	padding: 0.35rem 1.25rem;
+	outline: none;
+	border: 2px solid var(--color-grayish);
+	border-radius: 2rem;
+	color: var(--color-black);
+	background: var(--color-white);
+	text-transform: capitalize;
+	text-rendering: optimizeLegibility;
+	transition: all 0.35s ease;
+	text-decoration: none;
+}
+
+ .method-actionL:hover {
+	background: var(--color-blueLog);
+}
+
+

@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { StoreItem } from "./StoreItem";
 import { useAuth } from "../../auth/AuthProvider";
 import { API_URL } from "../../auth/routing";
@@ -38,20 +38,29 @@ export default function Store(){
 
     return(
     
+        
         <ShoppingCartProvider>
-        <NavBarUserLayout>
             
-                <Row md={2} xs={1} lg={3} className="g-3">
+        <NavBarUserLayout>
+        <Container className="d-flex justify-content-center align-items-center">
+            
+            <Row>  
+                <br/><br/>   
+                <h1  >Productos </h1>
+                <br/><br/>                           
+                <Row className="g-4" md={2} xs={1} lg={3}>
                     {products.map(item => (
-                        <Col key={item.idproduct}>
+                        <Col sm={4} key={item.idproduct}>
                             <StoreItem {...item}
                                 
                             />
                         </Col>
                     ))}
-
-                </Row>    
+                </Row> 
+                </Row>
+                </Container>
         </NavBarUserLayout>
+        
         </ShoppingCartProvider>
     );
     

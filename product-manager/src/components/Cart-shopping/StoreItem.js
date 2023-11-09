@@ -1,4 +1,4 @@
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Container } from "react-bootstrap";
 import image from "../../assets/image/default-product.jpg"
 import { formatCurrency } from "./formatCurrency";
 import { useShoppingCart } from "./ShoppingCartContext";
@@ -16,14 +16,15 @@ export function StoreItem({idproduct,name,price}){
     const quantityTotal = getItemQuantity(idproduct);
 
     return(
-        <Card className="h-100">
+  
+            <Card >
             <Card.Img
+                className="mb-2"
                 variant = "top"
                 src={image}
-                height = "200px"
+                height = "100px"
                 style={{objectFit:"cover"}} 
             />
-
             <Card.Body className="d-flex flex-column">
                 <Card.Title className="d-flex justify-content-between align-items-baseline mb-4">
                     <span className="fs-2">{name}</span>
@@ -47,6 +48,7 @@ export function StoreItem({idproduct,name,price}){
                 </div>
 
             </Card.Body>
-        </Card>
+            </Card>
+        
     )
 }

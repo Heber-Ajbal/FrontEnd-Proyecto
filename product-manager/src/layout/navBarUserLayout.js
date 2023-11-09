@@ -1,29 +1,33 @@
-import { Button } from "react-bootstrap";
+import { Button, Nav, Navbar } from "react-bootstrap";
 import { useShoppingCart } from "../components/Cart-shopping/ShoppingCartContext";
 
 export default function NavBarLayout({ children }) {
     const { cartQuantity } = useShoppingCart()
     const ContextCart = useShoppingCart();
+   
     return(
 <>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="/#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-md-auto gap-2">
-        <li class="nav-item rounded">
-          <a class="nav-link active" aria-current="page" href="/#"><i class="bi bi-house-fill me-2"></i>Tienda</a>
-        </li>
-        <li class="nav-item rounded">
-          <a class="nav-link" href="/#"><i class="bi bi-people-fill me-2"></i>Perfil</a>
-        </li>
-        <li class="nav-item rounded">
-          <a class="nav-link" href="/#"><i class="bi bi-telephone-fill me-2"></i>Cerrar Sesion</a>
-        </li>
-        <li class="nav-item ">
-        {ContextCart.cartQuantity > 0 && (
+<Navbar bg="dark" expand="lg" variant="dark">
+
+      <div className="container-fluid">
+      
+        <Navbar.Brand href="/#"></Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarNav" />
+        <Navbar.Collapse id="navbarNav">
+        
+          <Nav className="ms-md-auto gap-2">
+            <Nav.Link href="/#" className="rounded" active>
+              Productos
+            </Nav.Link>
+            <Nav.Link href="/#" className="rounded">
+              Ver Perfil
+            </Nav.Link>
+            <Nav.Link href="/#" className="rounded">
+              Cerrar Sesion
+            </Nav.Link>
+            
+              
+            {ContextCart.cartQuantity > 0 && (
           <Button
             onClick={ContextCart.openCart}
             style={{ width: "3rem", height: "3rem", position: "relative" }}
@@ -54,13 +58,16 @@ export default function NavBarLayout({ children }) {
             </div>
           </Button>
         )}
-        </li>
-      </ul>
-    </div>
-    
-  </div>
-  
-</nav>
+            
+           
+           
+          </Nav>
+          
+        </Navbar.Collapse>
+        
+      </div>
+      
+    </Navbar>
 
 <main> {children}</main>
 </>
