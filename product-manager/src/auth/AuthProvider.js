@@ -5,6 +5,7 @@ const AuthContext = createContext({
     isAuthenticated: false,
     saveuser: ()=>{},
     getAccessToken: ()=>{},
+    SingOut: () =>{},
 });
 
 export function AuthProvider({children}){
@@ -31,13 +32,20 @@ export function AuthProvider({children}){
 
     function saveUser(AuthResponse){
         localStorage.setItem("token",JSON.stringify(AuthResponse.body.token));
-        localStorage.setItem("ID",JSON.stringify(AuthResponse.body.id));
-        console.log(AuthResponse.body);
+        localStorage.setItem("ID",JSON.stringify(AuthResponse.body.id));        
+        localStorage.setItem("Rol",JSON.stringify(AuthResponse.body.rol));
         setIsAuthenticated(true);
     }
 
+    function SingOut(){
+        setIsAuthenticated(false);
+        localStorage.removeItem("ID")        
+        localStorage.removeItem("token")
+        localStorage.removeItem("Rol")
+    }
+
     return(
-        <AuthContext.Provider value={{isAuthenticated,saveUser,getAccessToken}}>
+        <AuthContext.Provider value={{isAuthenticated,saveUser,getAccessToken,SingOut}}>
             {children}
         </AuthContext.Provider>
     );

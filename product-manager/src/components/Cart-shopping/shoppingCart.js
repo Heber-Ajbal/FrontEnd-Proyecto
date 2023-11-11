@@ -6,12 +6,17 @@ import { API_URL } from "../../auth/routing";
 import { useAuth } from "../../auth/AuthProvider";
 import { getNumber,GetDate } from "../../helpers/productHelper";
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+
+import Swal from "sweetalert2";
 
 export  function ShoppingCart({ isOpen }) {
     const { closeCart, cartItems } = useShoppingCart();
     const [idSale,setIdSale] = useState("")
     const Auth = useAuth();    
     const [showPayment, setShow] = useState(false);   
+
+    const goTo = useNavigate();
 
     const [Id,setId] = useState("");
     const [name,setName] = useState("");
@@ -53,11 +58,11 @@ export  function ShoppingCart({ isOpen }) {
             });
 
 
-            if(response.ok){
-                alert("Funciona" )   
+            if(response.ok){ 
                 const data = await response.json();
                 setIdSale(data); 
-                console.log("Este es el ID de la Venta "+idSale)
+                goTo("/store");
+                return <Navigate  to="/store" />
             }else{
                 console.log(response)
             }
@@ -115,7 +120,7 @@ export  function ShoppingCart({ isOpen }) {
 
 
           if(response.ok){
-              alert("Funciona" )   
+              
               
 
           }else{
@@ -131,6 +136,15 @@ export  function ShoppingCart({ isOpen }) {
       const total = element.quantity * element.price;
       ShowPaymant(element.idproduct,element.quantity,idSale,total,)
   });  
+
+    window.location.reload();
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Compra Exitosa!!",
+      showConfirmButton: false,
+      timer: 1500
+      });
   }
 
 
@@ -139,6 +153,8 @@ export  function ShoppingCart({ isOpen }) {
       
       AddDetailSale(idProduct,total,nQuantity,idSale)
       getProductId(idProduct,nQuantity);
+
+
       
     }
 
@@ -168,8 +184,6 @@ export  function ShoppingCart({ isOpen }) {
 
           if(response.ok){
               
-              console.log("This is the "+Id);
-              alert("Producto Actualizado correctamente");
           }
       } catch (error) {
           
@@ -220,14 +234,14 @@ export  function ShoppingCart({ isOpen }) {
                             <h4 class="mb">Direccion de Facturacion</h4>
                               <div class="row">
                                 <div class="col">
-                                  <label for="firstName">First name</label>
+                                  <label for="firstName">Nombre</label>
                                   <input type="text" class="form-control" id="firstName" placeholder="" value="" required/>
                                   <div class="invalid-feedback">
                                     Valid first name is required.
                                   </div>
                                 </div>
                                 <div class="col">
-                                  <label for="lastName">Last name</label>
+                                  <label for="lastName">Apellidos</label>
                                   <input type="text" class="form-control" id="lastName" placeholder="" value="" required/>
                                   <div class="invalid-feedback">
                                     Valid last name is required.
@@ -236,7 +250,7 @@ export  function ShoppingCart({ isOpen }) {
                               </div>
 
                               <div class="mb-3">
-                                <label for="address">Address</label>
+                                <label for="address">Direccion</label>
                                 <input type="text" class="form-control" id="address" placeholder="1234 Main St" required/>
                                 <div class="invalid-feedback">
                                   Please enter your shipping address.
@@ -244,51 +258,21 @@ export  function ShoppingCart({ isOpen }) {
                               </div>
 
                               <div class="mb-3">
-                                <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                                <label for="address2">Direccion 2 <span class="text-muted">(opcional)</span></label>
                                 <input type="text" class="form-control" id="address2" placeholder="Apartment or suite"/>
-                              </div>
-
-                              <div class="row">
-                                <div class="col">
-                                  <label for="country">Country</label>
-                                  <select class="custom-select d-block w-100" id="country" required>
-                                    <option value="">Choose...</option>
-                                    <option>United States</option>
-                                  </select>
-                                  <div class="invalid-feedback">
-                                    Please select a valid country.
-                                  </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                  <label for="state">State</label>
-                                  <select class="custom-select d-block w-100" id="state" required>
-                                    <option value="">Choose...</option>
-                                    <option>California</option>
-                                  </select>
-                                  <div class="invalid-feedback">
-                                    Please provide a valid state.
-                                  </div>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                  <label for="zip">Zip</label>
-                                  <input type="text" class="form-control" id="zip" placeholder="" required/>
-                                  <div class="invalid-feedback">
-                                    Zip code required.
-                                  </div>
-                                </div>
                               </div>
                               <hr class="mb-4"/>
 
-                              <h4 class="mb-3">Payment</h4>
+                              <h4 class="mb-3">Tipo de Pago</h4>
 
                               <div class="d-block my-3">
                                 <div class="custom-control custom-radio">
                                   <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required/>
-                                  <label class="custom-control-label" for="credit">Credit card</label>
+                                  <label class="custom-control-label" for="credit">Tarjeta de Credito</label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                   <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required/>
-                                  <label class="custom-control-label" for="debit">Debit card</label>
+                                  <label class="custom-control-label" for="debit">Tarjeta de Debito</label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                   <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required/>
@@ -297,15 +281,15 @@ export  function ShoppingCart({ isOpen }) {
                               </div>
                               <div class="row">
                                 <div class="col-md-6 mb-3">
-                                  <label for="cc-name">Name on card</label>
+                                  <label for="cc-name">Nombre del Propietario</label>
                                   <input type="text" class="form-control" id="cc-name" placeholder="" required/>
-                                  <small class="text-muted">Full name as displayed on card</small>
+                                  <small class="text-muted">Nombre completo que se muestra en la tarjeta</small>
                                   <div class="invalid-feedback">
                                     Name on card is required
                                   </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                  <label for="cc-number">Credit card number</label>
+                                  <label for="cc-number">Numero de Tarjeta</label>
                                   <input type="text" class="form-control" id="cc-number" placeholder="" required/>
                                   <div class="invalid-feedback">
                                     Credit card number is required
@@ -314,7 +298,7 @@ export  function ShoppingCart({ isOpen }) {
                               </div>
                               <div class="row">
                                 <div class="col-md-3 mb-3">
-                                  <label for="cc-expiration">Expiration</label>
+                                  <label for="cc-expiration">Fecha de expiracion</label>
                                   <input type="text" class="form-control" id="cc-expiration" placeholder="" required/>
                                   <div class="invalid-feedback">
                                     Expiration date required

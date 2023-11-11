@@ -17,7 +17,15 @@ export default function Login() {
 
 
     if(auth.isAuthenticated){
-        return <Navigate  to="/dashboard" />
+		const Local = localStorage.getItem("Rol");
+		const Rol = Local.replace(/"/g, '');
+		console.log(Rol)
+		if(Rol === "Client"){
+			return <Navigate  to="/store" />
+		}else{
+			return <Navigate  to="/dashboard" />
+		}
+        
     }
 
 	async function handleSubmit(e) {

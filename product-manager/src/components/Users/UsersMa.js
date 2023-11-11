@@ -4,6 +4,7 @@ import { API_URL } from "../../auth/routing"
 import NavBarLayout from "../../layout/NavbarLayout";
 import DataTable from "react-data-table-component";
 import { Button, Container, Form, Modal } from "react-bootstrap";
+import Swal from "sweetalert2";
 import "jspdf-autotable"
 
 export default function User(){
@@ -27,6 +28,9 @@ export default function User(){
     const handleCloseAdd = () => setShowCreate(false);
     const handleShowAdd = () => setShowCreate(true);
     const Auth = useAuth();
+    
+    const [pending, setPending] = useState(true);
+    const [columns, setColumns] = useState([]);
 
     const colums = [
         {
@@ -126,6 +130,51 @@ export default function User(){
         });
         setFilter(result);
     },[search]);
+
+    useEffect(() => {
+		const timeout = setTimeout(() => {
+            
+            const colums = [
+                {
+                    name:'Id',
+                    selector: row => row.idUser,
+                    sortable: true,
+                    omit:true
+                },
+                {
+                    name:'Username',
+                    selector: row => row.username,
+                    sortable: true
+                },
+                {
+                    name:'Email',
+                    selector: row => row.email,
+                    sortable: true
+                },
+                {
+                    name:'Rol',
+                    selector: row => row.rol,
+                    sortable: true
+                },
+                {
+                    name:"Acciones",
+                    cell:(row)=>(
+                        <div >
+                            <Button variant="danger" onClick={()=>deleteUser(row.idUser)}>Delete</Button>{' '}
+                            <Button variant="primary" onClick={() =>getUserId(row.idUser)}>Ver</Button>
+        
+        
+                           
+                        </div>        
+                    )
+                    
+                }
+            ]  
+            setColumns(colums);
+			setPending(false);
+		}, 2000);
+		return () => clearTimeout(timeout);
+	}, []);
 
     async function getUsers(){
         try {
@@ -271,7 +320,8 @@ export default function User(){
             <h1>Usuario</h1>
                 <div class="col">
                     <DataTable
-                        columns={colums}
+                        columns={columns}
+                        progressPending={pending}
                         data={filter}
                         pagination
                         fixedHeader
@@ -354,7 +404,58 @@ export default function User(){
                 </div>
 
 
-                
+                 {/* MODAL TO UPDATE THE PRODUCT */}
+                 <Modal show={showUpdate} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                <Modal.Title>Datos del Usuario: {user.username}</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                    <Form.Label>ID</Form.Label>
+                                    
+                                        <Form.Control
+                                            type="text"
+                                            value={user.idUser}
+                                            disabled
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                    <Form.Label>Username</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={username}
+                                            onChange={(e) => setUsername(e.target.value)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
+                                    <Form.Label>Email</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            disabled
+                                        />
+                                    </Form.Group>                         
+                                    <Form.Group className="mb-3" controlId="dueDate">
+                                                <Form.Label>Rol</Form.Label>
+                                                    <Form.Select value={rol} onChange={(e) => setRol(e.target.value)} disabled>
+                                                        <option>Seleccione un Rol</option>
+                                                        <option  value="ADMIN"  >Administrador</option>
+                                                        <option  value="Client" >Cliente</option>
+                                                    </Form.Select>
+                                                </Form.Group>                              
+                                    
+                                </Form>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Cerrar
+                                </Button>
+                                </Modal.Footer>
+                            </Modal>
+                            {/* END THE MODAL TO UPDATE DE PRODUCT */}
             </div>
             </Container>
         </NavBarLayout>

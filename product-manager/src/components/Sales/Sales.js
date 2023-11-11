@@ -1,56 +1,23 @@
 import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
 import NavBarLayout from "../../layout/NavbarLayout";
-import DataTable from "react-data-table-component";
+import DataTable, { createTheme}  from "react-data-table-component";
 import { Button, Container } from "react-bootstrap";
 import { API_URL } from "../../auth/routing";
 import { useAuth } from "../../auth/AuthProvider";
+import Swal from "sweetalert2";
 
 export default function Sales(){
 
     const [products, setProducts] = useState([]);
     const [search, SetSearch]= useState('');
     const [filter, setFilter] = useState([]);
+    const [pending, setPending] = useState(true);
+    const [columns, setColumns] = useState([]);
 
     const Auth = useAuth();
 
-    const colums = [
-        {
-            name:'Id',
-            selector: row => row.idSale,
-            sortable: true,            
-            omit: true
-        },
-        {
-            name:'Cliente',
-            selector: row => row.user.username,
-            sortable: true
-        },
-        {
-            name:'Numero de Venta',
-            selector: row => row.numberSale,
-            sortable: true
-        },
-        {
-            name:'Total de Venta',
-            selector: row => row.total,
-            sortable: true
-        },
-        {
-            name:'Fecha de Venta',
-            selector: row => row.saleDate,
-            sortable: true
-        },
-        {
-            name:"Acciones",
-            cell:(row)=>(
-                <div>
-                    <Button variant="danger">Ver Reporte</Button>{' '}
-                </div>        
-            )
-            
-        }
-    ]  
+    
 
     useEffect(()=>{getSales();}, []);
 
@@ -65,6 +32,53 @@ export default function Sales(){
         });
         setFilter(result);
     },[search]);
+
+    useEffect(() => {
+		const timeout = setTimeout(() => {
+            
+            const colums = [
+                {
+                    name:'Id',
+                    selector: row => row.idSale,
+                    sortable: true,            
+                    omit: true
+                },
+                {
+                    name:'Cliente',
+                    selector: row => row.user.username,
+                    sortable: true
+                },
+                {
+                    name:'Numero de Venta',
+                    selector: row => row.numberSale,
+                    sortable: true
+                },
+                {
+                    name:'Total de Venta',
+                    selector: row => row.total,
+                    sortable: true
+                },
+                {
+                    name:'Fecha de Venta',
+                    selector: row => row.saleDate,
+                    sortable: true
+                },
+                {
+                    name:"Acciones",
+                    cell:(row)=>(
+                        <div>
+                            <Button variant="danger">Ver Reporte</Button>{' '}
+                        </div>        
+                    )
+                    
+                }
+            ]  
+            setColumns(colums);
+			setPending(false);
+		}, 2000);
+		return () => clearTimeout(timeout);
+	}, []);
+
 
     async function getSales(){
         try {
@@ -135,8 +149,9 @@ export default function Sales(){
                 <h1>Historial de Ventas Realizadas</h1>
                 <div class="col">
                     <DataTable
-                        columns={colums}
+                        columns={columns}
                         data={filter}
+                        progressPending={pending}
                         pagination
                         fixedHeader
                         selectableRowsHighlight

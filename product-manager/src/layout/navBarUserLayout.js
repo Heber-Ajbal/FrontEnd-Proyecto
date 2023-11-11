@@ -1,10 +1,18 @@
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { useShoppingCart } from "../components/Cart-shopping/ShoppingCartContext";
+import { useAuth } from "../auth/AuthProvider";
 
 export default function NavBarLayout({ children }) {
     const { cartQuantity } = useShoppingCart()
     const ContextCart = useShoppingCart();
+    const auth = useAuth();
    
+    function SingOut(e){
+        e.preventDefault();
+
+        auth.SingOut();
+    }
+
     return(
 <>
 <Navbar bg="dark" expand="lg" variant="dark">
@@ -22,7 +30,7 @@ export default function NavBarLayout({ children }) {
             <Nav.Link href="/#" className="rounded">
               Ver Perfil
             </Nav.Link>
-            <Nav.Link href="/#" className="rounded">
+            <Nav.Link href="/#" className="rounded" onClick={SingOut}>
               Cerrar Sesion
             </Nav.Link>
             

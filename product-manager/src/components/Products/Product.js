@@ -5,6 +5,7 @@ import NavBarLayout from "../../layout/NavbarLayout";
 import DataTable from "react-data-table-component";
 import { Button, Container, Form, Modal } from "react-bootstrap";
 import jsPDF from "jspdf";
+import Swal from "sweetalert2";
 import "jspdf-autotable"
 
 export default function Product(){
@@ -28,6 +29,10 @@ export default function Product(){
     const handleCloseAdd = () => setShowCreate(false);
     const handleShowAdd = () => setShowCreate(true);
     const Auth = useAuth();
+
+    
+    const [pending, setPending] = useState(true);
+    const [columns, setColumns] = useState([]);
 
     const colums = [
         {
@@ -60,7 +65,7 @@ export default function Product(){
             cell:(row)=>(
                 <div className="text-center">
                     
-                    <Button variant="danger" onClick={()=>deleteProduct(row.idproduct)}>Delete</Button>{' '}
+                    <Button variant="danger" onClick={()=>message(row.idproduct)}>Delete</Button>{' '}
                     <Button variant="primary" onClick={() =>getProductId(row.idproduct)}>Update</Button>{' '}
 
 
@@ -144,6 +149,7 @@ export default function Product(){
         setFilter(result);
     },[search]);
 
+
     async function getProducts(){
         try {
             const response = await fetch(`${API_URL}/products`,{
@@ -191,6 +197,22 @@ export default function Product(){
         }
     }
 
+    function message(idProduct){
+        Swal.fire({
+            title: "¿Está seguro?",
+            text: "¡No podrás revertir esto!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, Eliminar!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                deleteProduct(idProduct);
+            }
+          });
+    }
+
     async function deleteProduct(idProduct){
         try {
             const response = await fetch(`${API_URL}/products/delete/${idProduct}`,{
@@ -202,8 +224,15 @@ export default function Product(){
             });
 
             if(response.ok){
-                getProducts();
-                alert("Producto eliminado correctamente");
+                Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: "Producto Eliminado!!",
+					showConfirmButton: false,
+					timer: 1500
+				  });
+                getProducts();                
+
             }
         } catch (error) {
             
@@ -230,7 +259,13 @@ export default function Product(){
 
             if(response.ok){
                 getProducts();
-                alert("Producto Actualizado correctamente");
+                Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: "Producto Actualizado!!",
+					showConfirmButton: false,
+					timer: 1500
+				  });
                 handleClose()
             }
         } catch (error) {
@@ -257,8 +292,15 @@ export default function Product(){
 
             if(response.ok){
                 getProducts();
+                Swal.fire({
+					position: "top-end",
+					icon: "success",
+					title: "Producto Agregado!!",
+					showConfirmButton: false,
+					timer: 1500
+				  });
                 handleCloseAdd()
-                alert("Producto Agregado correctamente");
+
                 
             }
         } catch (error) {
