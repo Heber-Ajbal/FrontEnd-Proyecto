@@ -7,6 +7,9 @@ import { Button, Container, Form, Modal } from "react-bootstrap";
 import jsPDF from "jspdf";
 import Swal from "sweetalert2";
 import "jspdf-autotable"
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 
 export default function Product(){
 
@@ -111,13 +114,22 @@ export default function Product(){
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="dueDate">
                             <Form.Label>Fecha de Vencimiento</Form.Label>
-                                <Form.Control
+                               {/* <Form.Control
                                     type="text"
                                     name ="dueDate"
                                     value={dueDate}
                                     autoFocus
                                     onChange={(e) => setDueDate(e.target.value)}
-                                />
+                                /> */}
+
+<br/>
+                                            <DatePicker selected={dueDate}
+                                            onChange={ date=>setDueDate(date)}
+                                            dateFormat="dd-MM-yyyy"
+                                        // isClearable
+                                            showYearDropdown
+     
+            />          
                             </Form.Group>                            
                             
                         </Form>
@@ -189,7 +201,10 @@ export default function Product(){
                 setName(data.name);
                 setPrice(data.price);
                 setQuantity(data.quantity);
-                setDueDate(data.dueDate);
+                const fecha = new Date(data.dueDate);
+                const fechaFormateada = format(fecha, 'dd-MM-yyyy');
+                //setDueDate(fechaFormateada);
+                console.log(fechaFormateada)
                 handleShow();
             }
         } catch (error) {
@@ -411,13 +426,24 @@ export default function Product(){
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="dueDate">
                                         <Form.Label>Fecha de Vencimiento</Form.Label>
-                                            <Form.Control
+                                            {/* <Form.Control
                                                 type="text"
                                                 name ="dueDate"
                                                 value={dueDate}
                                                 autoFocus
                                                 onChange={(e) => setDueDate(e.target.value)}
-                                            />
+                                            /> */}
+                                            <br/>
+                                            <DatePicker selected={ dueDate}
+                                            onChange={ date=>setDueDate(date)}
+                                            dateFormat="dd-MM-yyyy"
+                                            //minDate={ new Date()}
+                                            //maxDate={ new Date()}
+                                            //filterDate={ date=>date.getDay()!=6 && date.getDay()!=0}
+                                        // isClearable
+                                            showYearDropdown
+     
+            />          
                                         </Form.Group>                            
                                         
                                     </Form>
